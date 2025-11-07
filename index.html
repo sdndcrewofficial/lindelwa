@@ -92,6 +92,11 @@
             transform: scale(1.05);
         }
 
+        /* Navigation Links (Desktop) */
+        .header nav {
+            display: flex; /* Links are row-aligned on desktop */
+        }
+
         .header nav a {
             color: #E0E0E0;
             text-decoration: none;
@@ -103,6 +108,18 @@
         .header nav a:hover {
             color: #FFD700; /* Yellow on hover */
             text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+        }
+        
+        /* NEW: Menu Toggle Button (Hidden by default on desktop) */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #FFD700;
+            font-size: 2em;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1001; /* Ensure button is above menu when open */
         }
 
         /* Main Content Sections */
@@ -219,29 +236,63 @@
             100% { transform: scale(1); opacity: 1; }
         }
         
-        /* Responsive adjustments for smaller screens */
+        /* 📱 Responsive adjustments for smaller screens (Mobile) 📱 */
         @media (max-width: 900px) {
+            
+            /* Show the menu button */
+            .menu-toggle {
+                display: block;
+            }
+            
+            /* Hide and style the navigation menu */
+            .header nav {
+                display: none; /* Hidden by default on mobile */
+                flex-direction: column; /* Stack links vertically */
+                width: 100%;
+                position: absolute;
+                top: 80px; /* Position below the header */
+                left: 0;
+                background-color: rgba(0, 0, 0, 0.95); /* Semi-transparent black background for menu */
+                padding: 10px 0;
+                border-top: 1px solid #FFD700;
+            }
+
+            /* Make the menu visible when the 'open' class is added by JavaScript */
+            .header nav.open {
+                display: flex; 
+            }
+
+            .header nav a {
+                margin: 10px 0; /* Add vertical spacing to links */
+                padding: 10px 5%;
+                text-align: center;
+                border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+            }
+            
+            /* --- Hero Section Mobile adjustments --- */
             .hero {
-                flex-direction: column; /* Stack image and text vertically */
+                flex-direction: column; 
                 height: auto;
                 padding-bottom: 50px;
-                text-align: center;
             }
             .hero-image {
                 position: relative;
                 width: 100%;
-                height: 50vh; /* Give the image a defined space */
+                height: 50vh; 
                 background-position: center top;
                 background-size: cover;
                 left: 0;
             }
             .hero-content {
-                width: 100%;
-                margin: 20px 0 0 0;
-                text-align: center; /* Center the text for mobile */
+                width: 90%; /* Center the content */
+                margin: 20px auto 0 auto;
+                text-align: center; 
             }
-            .header nav a {
-                margin-left: 15px;
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            .hero p {
+                font-size: 1.2em;
             }
         }
     </style>
@@ -249,13 +300,17 @@
 <body>
 
     <div class="header">
-        <a href="https://ivinarhpark.academy" target="_blank" class="logo">
+        <a href="https://ivinahpark.academy" target="_blank" class="logo">
             <img src="images/ivinah logo.png" alt="Ivinar Park Academy Logo"> </a>
-        <nav>
+        
+        <button class="menu-toggle" aria-label="Toggle navigation menu">☰</button>
+
+        <nav id="main-nav">
             <a href="#about">About Lindelwa</a>
             <a href="#minister">Ministerial Role</a>
             <a href="#steward">Academy Steward</a>
             <a href="#tribute">My Dedication</a>
+            <a href="https://hillaryelandportfolio.netlify.app" target="_blank">Portfolio</a>
         </nav>
     </div>
 
@@ -265,7 +320,7 @@
         <div class="hero-content">
             <h1>LINDELWA ABU-BASUTU</h1>
             <p>Junior Minister of Mines and Mining Development</p>
-            <p>Steward at Ivinar Park Academy</p>
+            <p>Steward at Ivinah Park Academy</p>
             
         </div>
     </div>
@@ -297,23 +352,48 @@
         <ul>
             <li><strong>Student Leadership:</strong> Guiding and inspiring fellow students.</li>
             <li><strong>Academic Excellence:</strong> Setting a high standard for achievement.</li>
-            <li><strong>Community Building:</b> Fostering a supportive and inclusive environment.</li>
+            <li><strong>Community Building:</strong> Fostering a supportive and inclusive environment.</li>
         </ul>
     </div>
 
     <div id="tribute" class="cta-section">
         <h2>My Heartfelt Dedication</h2>
         <p>
-            To Lindelwa, my best friend . Every role you undertake, every challenge you face, you do so with grace, strength, and brilliance. You are a constant source of inspiration, joy, and unwavering support in my life. Thank you for simply being you.
+            To Lindelwa, my best friend. Every role you undertake, every challenge you face, you do so with grace, strength, and brilliance. You are a constant source of inspiration, joy, and unwavering support in my life. Thank you for simply being you.
         </p>
         <div class="heart-emoji">❤️</div>
         <p style="font-size: 1em; margin-top: 10px;">With all my love.</p>
     </div>
 
     <div class="footer">
-        <p>&copy; 2025 A Tribute to Lindelwa Abu-basutu. Built with love by Hillary Eland : hillaryelandportfolio.netlify.app.</p>
-        <p>Ivinar Park Academy: <a href="https://ivinarhpark.academy" target="_blank">ivinarhpark.academy</a></p>
+        <p>&copy; 2025 A Tribute to Lindelwa Abu-basutu. Built with love by Hillary Eland: <a href="https://hillaryelandportfolio.netlify.app" target="_blank">hillaryelandportfolio.netlify.app</a>.</p>
+        <p>Ivinar Park Academy: <a href="https://ivinahpark.academy" target="_blank">ivinahpark.academy</a></p>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const nav = document.getElementById('main-nav');
+            const navLinks = nav.querySelectorAll('a');
+
+            // 1. Toggle the 'open' class on the nav when the button is clicked
+            menuToggle.addEventListener('click', function() {
+                nav.classList.toggle('open');
+            });
+            
+            // 2. Close the menu after a link is clicked (for smoother navigation)
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (nav.classList.contains('open')) {
+                        // Use a short delay to ensure links that trigger a page jump work smoothly
+                        setTimeout(() => {
+                            nav.classList.remove('open');
+                        }, 50); 
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
